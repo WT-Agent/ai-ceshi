@@ -2,10 +2,10 @@
   <section class="nomads-showcase-section">
     <div class="showcase-header">
       <div class="header-left">
-        <h2 class="showcase-title">趣味性格与心理测试实战模板库</h2>
-        <p class="showcase-subtitle">精选 MBTI 画像、恋爱情商与职场潜能测评，点击“一键套用”生成心理解析</p>
+        <h2 class="showcase-title">实战案例与模板库 (Nomads Showcase)</h2>
+        <p class="showcase-subtitle">精选高频实战场景，点击“一键套用”快速生成高质量结果</p>
       </div>
-      <span class="showcase-badge">已收录 {{ showcaseItems.length }} 个测试分析模板</span>
+      <span class="showcase-badge">已收录 {{ showcaseItems.length }} 个实战模板</span>
     </div>
 
     <div class="showcase-grid">
@@ -16,7 +16,7 @@
       >
         <div class="card-header">
           <span class="scenario-tag">{{ item.tag }}</span>
-          <span class="usage-count">{{ item.usageCount }} 次测评</span>
+          <span class="usage-count">{{ item.usageCount }} 次应用</span>
         </div>
 
         <div class="card-content">
@@ -41,8 +41,13 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
+const props = defineProps<{
+  appTitle?: string;
+  isImage?: boolean;
+}>();
+
 const emit = defineEmits<{
-  (e: 'apply-template', payload: { prompt: string; testType?: string; dimension?: string }): void;
+  (e: 'apply-template', payload: { prompt: string; style?: string }): void;
 }>();
 
 export interface ShowcaseItem {
@@ -50,73 +55,105 @@ export interface ShowcaseItem {
   tag: string;
   title: string;
   prompt: string;
-  testType?: string;
-  dimension?: string;
+  style?: string;
   usageCount: string;
 }
 
-const showcaseItems = computed<ShowcaseItem[]>(() => [
-  {
-    id: 'ceshi-1',
-    tag: 'MBTI画像',
-    title: 'INFP 调停者深度心灵画像与能量恢复',
-    prompt: '为 INFP 精神内耗与高敏感人群生成一份心理画像，剖析其深层理想主义、直觉共情力及社交充电指南。',
-    testType: 'MBTI与性格基因深度画像',
-    dimension: '认知思维与决策偏好',
-    usageCount: '69.4k'
-  },
-  {
-    id: 'ceshi-2',
-    tag: '职场潜能',
-    title: 'ENTJ 指挥官型职场天花板突破测评',
-    prompt: '分析 ENTJ 高执行力与果断决策特质在职场晋升中的优势，并警示可能存在的过于强势与忽视下属情绪盲点。',
-    testType: '职场潜能与领导力风格',
-    dimension: '职场天赋与潜能开发',
-    usageCount: '53.1k'
-  },
-  {
-    id: 'ceshi-3',
-    tag: '恋爱情商',
-    title: '回避型依恋与焦虑型依恋沟通破局',
-    prompt: '测试恋爱关系中当一方回避另一方焦虑时的心理互动模式，提供建立安全型依恋与非暴力沟通的破局方案。',
-    testType: '恋爱相处与情商社交',
-    dimension: '人际沟通与情商社交',
-    usageCount: '61.8k'
-  },
-  {
-    id: 'ceshi-4',
-    tag: '趣味拟人',
-    title: '独立高冷猫咪型性格图腾与社交边界',
-    prompt: '将“表面高冷、内心温暖、注重独立空间”的人格比作猫咪图腾，生成一份趣味动物性格诊断与社交边界声明。',
-    testType: '趣味角色原型与动物性格',
-    dimension: '人际沟通与情商社交',
-    usageCount: '47.2k'
-  },
-  {
-    id: 'ceshi-5',
-    tag: '讨好心理',
-    title: '讨好型人格与拒绝恐惧心理防御机制',
-    prompt: '剖析习惯性迎合他人、不敢表达拒绝的深层讨好型心理，提供建立心理防线与提升自我认同感练习。',
-    testType: 'MBTI与性格基因深度画像',
-    dimension: '情绪压力与自我防卫',
-    usageCount: '44.9k'
-  },
-  {
-    id: 'ceshi-6',
-    tag: '情绪诊断',
-    title: '职场电量耗尽与心理倦怠状态自测',
-    prompt: '针对长工作时间带来的心理疲惫感，自测当前心理电量百分比，提供物理隔离与精神断舍离治愈建议。',
-    testType: '职场潜能与领导力风格',
-    dimension: '情绪压力与自我防卫',
-    usageCount: '58.3k'
+// 模拟实战案例数据库（支持根据文本/图像类及应用主题切换）
+const showcaseItems = computed<ShowcaseItem[]>(() => {
+  if (props.isImage) {
+    return [
+      {
+        id: 'img-1',
+        tag: '写真肖像',
+        title: '商务精英形象照',
+        prompt: '高端写字楼背景，身穿深蓝色西装，眼神自信专注，赛博朋克光影效果',
+        style: '<photography>',
+        usageCount: '18.5k'
+      },
+      {
+        id: 'img-2',
+        tag: '概念插画',
+        title: '未来科幻城市海报',
+        prompt: '霓虹灯光的赛博朋克立体城市，飞行汽车，高品质概念插画，8k分辨率',
+        style: '<illustration>',
+        usageCount: '24.1k'
+      },
+      {
+        id: 'img-3',
+        tag: '二次元动漫',
+        title: '日系国潮动漫角色',
+        prompt: '穿着现代汉服的国风少年，手持纸伞，水彩漫感，唯美光感与柔光滤镜',
+        style: '<anime>',
+        usageCount: '15.9k'
+      },
+      {
+        id: 'img-4',
+        tag: '水彩艺术',
+        title: '治愈系自然风景画',
+        prompt: '晨雾中的森林湖泊，阳光穿透树林，水彩渐变质感，温馨治愈风格',
+        style: '<watercolor>',
+        usageCount: '12.3k'
+      }
+    ];
+  } else {
+    return [
+      {
+        id: 'text-1',
+        tag: '职场总结',
+        title: '周报 OKR 成果提炼',
+        prompt: '本周完成了核心模块优化与线上异常排查，请帮我梳理为具备量化指标的 OKR 汇报文案',
+        style: '专业干练，结果导向',
+        usageCount: '32.8k'
+      },
+      {
+        id: 'text-2',
+        tag: '高情商沟通',
+        title: '拒绝不合理加班话术',
+        prompt: '领导在周末突然布置非紧急任务，如何高情商、委婉且有理有据地推迟到工作日处理？',
+        style: '高情商，委婉，有情调',
+        usageCount: '28.4k'
+      },
+      {
+        id: 'text-3',
+        tag: '短视频文案',
+        title: '知识干货吸睛开头',
+        prompt: '准备制作一条关于高效学习法的短视频，设计 3 个能在前 3 秒留住用户的爆款口播开头',
+        style: '专业干练，结果导向',
+        usageCount: '45.1k'
+      },
+      {
+        id: 'text-4',
+        tag: '商务公文',
+        title: '跨部门协同申请函',
+        prompt: '因项目上线需要研发部门配合联调，撰写一份正式、严谨且明确时间节点的协同申请书',
+        style: '专业干练，结果导向',
+        usageCount: '19.7k'
+      },
+      {
+        id: 'text-5',
+        tag: '小红书种草',
+        title: '实战干货笔记排版',
+        prompt: '分享 5 个提升日常工作效率的文字工具，语言亲切，搭配吸引人的标题与 Emoji 排版',
+        style: '高情商，委婉，有情调',
+        usageCount: '36.2k'
+      },
+      {
+        id: 'text-6',
+        tag: '学术润色',
+        title: '论文摘要与结论重构',
+        prompt: '将以下粗糙的研究结论重写为学术规范、逻辑严密且无语法语病的论文摘要总结',
+        style: '专业干练，结果导向',
+        usageCount: '22.0k'
+      }
+    ];
   }
-]);
+});
 
 function applyTemplate(item: ShowcaseItem) {
   emit('apply-template', {
     prompt: item.prompt,
-    testType: item.testType,
-    dimension: item.dimension
+    style: item.style
   });
 }
 </script>
